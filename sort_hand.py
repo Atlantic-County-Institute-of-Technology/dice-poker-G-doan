@@ -1,7 +1,7 @@
 # Function to sort the die values from highest to lowest
 
 
-def insertion_sort1(numbers):
+def hand_sort(numbers):
     # Variable to get the start time
     for i in range(1, len(numbers)):
         # To +1 every time it loops

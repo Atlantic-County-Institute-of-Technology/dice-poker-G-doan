@@ -18,11 +18,15 @@
 import inquirer3
 import os
 from dice import Dice
-from sort_hand import
+from sort_hand import hand_sort
 
 # Important variables
 global dice
 dice = Dice()
+global straight1
+straight1 = [1, 2, 3, 4, 5]
+global straight2
+straight2 = [2, 3, 4, 5, 6]
 
 
 # Function to Select dice to keep
@@ -51,8 +55,28 @@ def keep_select(kept_list):
 
 
 def get_score(hand):
-    if '1' in hand:
-
+    # print(hand)
+    # print(hand.count(1))
+    for i in range(len(hand)):
+        hand_value = hand.count(hand[i])
+        print(f"I:{i}: ({hand[i]}): {hand_value}")
+        if hand_value == 5:
+            temp_value = hand_value
+            # print("kind5")
+        elif hand_value == 4:
+            temp_value = hand_value
+            # print("kind4")
+        elif hand_value == 3:
+            temp_value = hand_value
+            # print("kind3")
+        elif hand_value == 2:
+            temp_value = hand_value
+            # print("kind2")
+        elif hand_value == 1:
+            temp_value = hand_value
+            straight = straight_check(hand)
+            if straight == "yes":
+                print("straight")
     # kind5 = 7
     # kind4 = 6
     # full = 5
@@ -60,7 +84,21 @@ def get_score(hand):
     # kind3 = 3
     # pair2 = 2
     # kind2 = 1
-    # empty = 0
+    # bust = 0
+
+
+def straight_check(check):
+    global straight1, straight2
+    if check == straight1:
+        straight = "yes"
+        return straight
+    elif check == straight2:
+        straight = "yes"
+        return straight
+    else:
+        straight = "no"
+        return straight
+
 
 def main():
     # global variables
@@ -83,13 +121,13 @@ def main():
                 # global variable for dice roll
                 global rolled
                 rolled = dice.roll_dice()
+                rolled = hand_sort(rolled)
                 print(f"Your Roll: {rolled}\n")  # Print to show dice roll
-                get_score(rolled)
+                # get_score(rolled)
                 # while loop for the actual game
                 while True:
                     os.system('cls' if os.name == 'nt' else 'clear')  # Code to clear old text
                     print(f"Your Roll: {rolled}\n")  # Print to show dice roll
-                    # print(f"score:{score}")  # Print for the score
                     get_score(rolled)
                     # Inquirer menu for the actual game
                     questions = [
@@ -106,6 +144,7 @@ def main():
                         case "Roll Dice":
                             os.system('cls' if os.name == 'nt' else 'clear')  # Code to clear old text
                             rolled = dice.roll_dice()
+                            rolled = hand_sort(rolled)
                             print(f"Your Roll: {rolled}\n")  # Print to show dice roll
                             get_score(rolled)
                         case "Keep Dice":
