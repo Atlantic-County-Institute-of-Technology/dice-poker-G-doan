@@ -23,6 +23,7 @@ from collections import Counter
 # Important variables
 global dice
 dice = Dice()
+# Sets the straights (the two possible)
 global straight1
 straight1 = [1, 2, 3, 4, 5]
 global straight2
@@ -54,16 +55,18 @@ def keep_select(kept_list):
     return kept_list
 
 
-def game_play():
+def game_play(new_game):
+
     # Some Global Variables
     global rolled
-    rolled = dice.roll_dice()
+    rolled = dice.roll_dice(new_game)
     global kept_dice
     kept_dice = []
     # Important variables for the code to run correctly
     rolls = 3
     playing = True
     while playing:
+        new_game = False  # Makes new_game false so you can keep
         if rolls == 1:
             playing = False
         os.system('cls' if os.name == 'nt' else 'clear')  # Code to clear old text
@@ -87,7 +90,7 @@ def game_play():
             case "Roll Dice":
                 rolls -= 1
                 os.system('cls' if os.name == 'nt' else 'clear')  # Code to clear old text
-                rolled = dice.roll_dice()
+                rolled = dice.roll_dice(new_game)
                 print(f"Your Roll: {rolled}\n")  # Print to show dice roll
             case "Keep Dice":
                 os.system('cls' if os.name == 'nt' else 'clear')  # Code to clear old text
@@ -110,22 +113,22 @@ def get_score(hand):
     hand_value = sorted(counts.values(), reverse=True)  # To get how many times a number appears
     unique_values = sorted(counts.keys(), reverse=True)  # To get the value of the unique die
     straight = straight_check(sorted_hand)  # Calls on the function for checking for a straight
-    if hand_value[0] == 5:
+    if hand_value[0] == 5:  # If the score is 5 of a kind
         score_value = 7
-    elif hand_value[0] == 4:
+    elif hand_value[0] == 4:  # If the score is 4 of a kind
         score_value = 6
-    elif hand_value == [3, 2]:
+    elif hand_value == [3, 2]:  # If the score is full house
         score_value = 5
-    elif hand_value[0] == 3:
+    elif hand_value[0] == 3:  # If the score is 3 of a kind
         score_value = 3
-    elif hand_value == [2, 2, 1]:
+    elif hand_value == [2, 2, 1]:  # If the score is 2 pair
         score_value = 2
-    elif hand_value[0] == 2:
+    elif hand_value[0] == 2:  # If the score is 2 of a kind
         score_value = 1
-    elif hand_value[0] == 1:
-        if straight == "yes":
+    elif hand_value[0] == 1:  # If the score is a straight or bust
+        if straight == "yes":  # Checks if it's a straight
             score_value = 4
-        else:
+        else:  # Checks if it is busts
             score_value = 0
     return score_value
 
@@ -140,10 +143,10 @@ def hand_evaluate(hand_score):
 # Function that checks if the hand is a straight
 def straight_check(check):
     global straight1, straight2
-    if check == straight1:
+    if check == straight1:  # Checks if it is the straight 1-5
         straight = "yes"
         return straight
-    elif check == straight2:
+    elif check == straight2:  # Checks if it is the straight 2-6
         straight = "yes"
         return straight
     else:
@@ -167,10 +170,11 @@ def main():
         # Match select for the start menu
         match select:
             case "Start Game":
-                game_play()  # Calls on the function that actually plays the game
+                new_game = True
+                game_play(new_game)  # Calls on the function that actually plays the game
 
             case "Exit":
-                exit()
+                exit()  # Exits the programs
 
 
 if __name__ == '__main__':

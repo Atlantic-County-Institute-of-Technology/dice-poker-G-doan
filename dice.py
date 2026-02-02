@@ -10,7 +10,10 @@ class Dice:
         self.dice = []
         self.keep = []
 
-    def roll_dice(self):
+    def roll_dice(self, reset):
+        if reset == True:
+            self.dice = []
+            self.keep = []
         if len(self.dice) != 5:
             for die in range(self.MAX_DICE):
                 self.dice.append(random.randint(1, self.NUM_FACES))
@@ -22,6 +25,7 @@ class Dice:
         return self.dice
 
     def keep_dice(self, die):
+
         self.keep[die - 1] = "Keep"
         return self.keep
 
